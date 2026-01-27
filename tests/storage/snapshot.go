@@ -131,7 +131,7 @@ var _ = Describe(SIG("VirtualMachineSnapshot Tests", func() {
 	Context("With simple VM", func() {
 		BeforeEach(func() {
 			var err error
-			vm = libvmi.NewVirtualMachine(libvmifact.NewCirros())
+			vm = libvmi.NewVirtualMachine(libvmifact.NewAlpine())
 			vm, err = virtClient.VirtualMachine(testsuite.GetTestNamespace(nil)).Create(context.Background(), vm, metav1.CreateOptions{})
 			Expect(err).ToNot(HaveOccurred())
 		})
@@ -331,7 +331,7 @@ var _ = Describe(SIG("VirtualMachineSnapshot Tests", func() {
 			It("[test_id:6767]with volumes and guest agent available", decorators.StorageCritical, func() {
 				dv := libdv.NewDataVolume(
 					libdv.WithBlankImageSource(),
-					libdv.WithStorage(libdv.StorageWithStorageClass(snapshotStorageClass)),
+					libdv.WithStorage(libdv.StorageWithStorageClass(snapshotStorageClass), libdv.StorageWithVolumeSize("1024Mi")),
 				)
 				vm, vmi := createAndStartVM(
 					libvmi.NewVirtualMachine(
@@ -383,6 +383,7 @@ var _ = Describe(SIG("VirtualMachineSnapshot Tests", func() {
 					libdv.WithBlankImageSource(),
 					libdv.WithStorage(
 						libdv.StorageWithStorageClass(snapshotStorageClass),
+						libdv.StorageWithVolumeSize("1024Mi"),
 					),
 				)
 				vm, vmi := createAndStartVM(

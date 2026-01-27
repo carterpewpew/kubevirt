@@ -62,7 +62,7 @@ var _ = Describe(SIG("Declarative Hotplug", func() {
 
 	createVM := func(options ...libvmi.Option) *v1.VirtualMachine {
 		vm := libvmi.NewVirtualMachine(
-			libvmifact.NewCirros(options...),
+			libvmifact.NewFedora(options...),
 			libvmi.WithRunStrategy(v1.RunStrategyAlways))
 		vm, err := virtClient.VirtualMachine(testsuite.GetTestNamespace(nil)).Create(context.Background(), vm, metav1.CreateOptions{})
 		Expect(err).ToNot(HaveOccurred())
@@ -267,7 +267,7 @@ var _ = Describe(SIG("Declarative Hotplug", func() {
 	loginToVM := func(vm *v1.VirtualMachine) {
 		vmi, err := virtClient.VirtualMachineInstance(vm.Namespace).Get(context.Background(), vm.Name, metav1.GetOptions{})
 		Expect(err).ToNot(HaveOccurred())
-		err = console.LoginToCirros(vmi)
+		err = console.LoginToFedora(vmi)
 		Expect(err).ToNot(HaveOccurred())
 	}
 
