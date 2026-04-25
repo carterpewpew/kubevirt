@@ -1062,7 +1062,7 @@ func validateHugepagesMemoryRequests(field *k8sfield.Path, spec *v1.VirtualMachi
 		return causes
 	}
 	vmMemory := spec.Domain.Resources.Requests.Memory().Value()
-	if vmMemory == 0 && spec.Domain.Memory != nil {
+	if vmMemory == 0 && spec.Domain.Memory != nil && spec.Domain.Memory.Guest != nil {
 		vmMemory = spec.Domain.Memory.Guest.Value()
 	}
 	if vmMemory == 0 {
